@@ -1,10 +1,13 @@
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 public class Main extends Application {
     private World world;
@@ -35,8 +38,25 @@ public class Main extends Application {
         world.add(new Elephant(700, 400));
 
         canvas = new Canvas(1280, 720);
-        Pane root = new Pane(canvas);
-        Scene scene = new Scene(root, 1280, 720);
+
+        Button toggleBtn = new Button("Renderer: Basic");
+        toggleBtn.setOnAction(e -> {
+            if (renderer instanceof BasicRenderer) {
+                renderer = new SpriteRenderer();
+                toggleBtn.setText("Renderer: Sprite");
+            } else {
+                renderer = new BasicRenderer();
+                toggleBtn.setText("Renderer: Basic");
+            }
+        });
+
+        HBox controls = new HBox(toggleBtn);
+        controls.setPadding(new Insets(5));
+
+        BorderPane root = new BorderPane();
+        root.setTop(controls);
+        root.setCenter(canvas);
+        Scene scene = new Scene(root, 1280, 770);
 
         canvas.setOnMouseClicked(e -> {
             double cx = e.getX();
