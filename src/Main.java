@@ -14,6 +14,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         world = new World(1280, 720);
+        for (int i = 0; i < 30; i++) {
+            world.add(new Grass(Math.random() * 1280, Math.random() * 720));
+        }
         world.add(new Rabbit(640, 360));
         world.add(new Rabbit(300, 200));
         world.add(new Rabbit(900, 500));
@@ -55,7 +58,10 @@ public class Main extends Application {
             if (!e.isAlive()) {
                 continue;
             }
-            if (e instanceof Rabbit) {
+            if (e instanceof Grass) {
+                gc.setFill(Color.DARKGREEN);
+                gc.fillRect(e.getX() - 3, e.getY() - 3, 6, 6);
+            } else if (e instanceof Rabbit) {
                 gc.setFill(Color.WHITE);
                 gc.fillOval(e.getX() - 5, e.getY() - 5, 10, 10);
             } else if (e instanceof Wolf) {

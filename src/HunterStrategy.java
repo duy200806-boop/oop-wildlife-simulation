@@ -14,10 +14,6 @@ public class HunterStrategy implements SurvivalStrategy {
         double dx = prey.getX() - self.getX();
         double dy = prey.getY() - self.getY();
         self.direction = Math.atan2(dy, dx);
-
-        if (Math.sqrt(dx * dx + dy * dy) < 10) {
-            prey.alive = false;
-        }
     }
 
     private Entity findNearestPrey(Animal self, World world) {

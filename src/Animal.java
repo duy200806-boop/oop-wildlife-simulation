@@ -3,6 +3,10 @@ public abstract class Animal extends Entity {
     protected double direction;
     protected SurvivalStrategy strategy;
 
+    protected double hunger = 0;
+    protected double hungerRate = 0.01;
+    protected double maxHunger = 1.0;
+
     public Animal(double x, double y, double speed) {
         super(x, y);
         this.speed = speed;
@@ -11,10 +15,42 @@ public abstract class Animal extends Entity {
 
     @Override
     public void update(double dt, World world) {
+        hunger += hungerRate * dt;
+        if (hunger >= maxHunger) {
+            alive = false;
+            return;
+        }
         if (strategy != null) {
             strategy.act(this, world, dt);
         }
         move(dt);
+        tryEat(world);
+    }
+
+    protected void tryEat(World world) {
+        for (Entity e : world.getEntities()) {
+            if (e == this || !e.isAlive()) {
+                continue;
+            }
+            if (!canEat(e)) {
+                continue;
+            }
+            double dx = e.getX() - x;
+            double dy = e.getY() - y;
+            if (Math.sqrt(dx * dx + dy * dy) < 10) {
+                eat(e);
+                return;
+            }
+        }
+    }
+
+    protected boolean canEat(Entity e) {
+        return false;
+    }
+
+    protected void eat(Entity food) {
+        food.alive = false;
+        hunger = Math.max(0, hunger - 0.5);
     }
 
     protected void move(double dt) {
@@ -28,5 +64,9 @@ public abstract class Animal extends Entity {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public double getHunger() {
+        return hunger;
     }
 }
