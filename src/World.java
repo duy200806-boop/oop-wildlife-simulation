@@ -4,11 +4,53 @@ import java.util.List;
 public class World {
     private final double width;
     private final double height;
+    private final int tileSize = 32;
+    private final int gridW;
+    private final int gridH;
+    private final Terrain[][] grid;
     private List<Entity> entities = new ArrayList<>();
 
     public World(double width, double height) {
         this.width = width;
         this.height = height;
+        this.gridW = (int) (width / tileSize);
+        this.gridH = (int) (height / tileSize);
+        this.grid = new Terrain[gridW][gridH];
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                grid[i][j] = Terrain.GRASS;
+            }
+        }
+        for (int i = 5; i < 12; i++) {
+            for (int j = 8; j < 14; j++) {
+                grid[i][j] = Terrain.MUD;
+            }
+        }
+    }
+
+    public Terrain getTerrainAt(double x, double y) {
+        int i = (int) (x / tileSize);
+        int j = (int) (y / tileSize);
+        if (i < 0 || i >= gridW || j < 0 || j >= gridH) {
+            return Terrain.GRASS;
+        }
+        return grid[i][j];
+    }
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public int getGridW() {
+        return gridW;
+    }
+
+    public int getGridH() {
+        return gridH;
+    }
+
+    public Terrain getTile(int i, int j) {
+        return grid[i][j];
     }
 
     public void add(Entity e) {

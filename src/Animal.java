@@ -23,7 +23,7 @@ public abstract class Animal extends Entity {
         if (strategy != null) {
             strategy.act(this, world, dt);
         }
-        move(dt);
+        move(dt, world);
         tryEat(world);
     }
 
@@ -53,9 +53,10 @@ public abstract class Animal extends Entity {
         hunger = Math.max(0, hunger - 0.5);
     }
 
-    protected void move(double dt) {
-        x += Math.cos(direction) * speed * dt;
-        y += Math.sin(direction) * speed * dt;
+    protected void move(double dt, World world) {
+        double factor = world.getTerrainAt(x, y).speedFactor;
+        x += Math.cos(direction) * speed * factor * dt;
+        y += Math.sin(direction) * speed * factor * dt;
     }
 
     public void setStrategy(SurvivalStrategy strategy) {

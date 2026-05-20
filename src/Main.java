@@ -54,8 +54,13 @@ public class Main extends Application {
 
     private void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.LIGHTGREEN);
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        int ts = world.getTileSize();
+        for (int i = 0; i < world.getGridW(); i++) {
+            for (int j = 0; j < world.getGridH(); j++) {
+                gc.setFill(colorOf(world.getTile(i, j)));
+                gc.fillRect(i * ts, j * ts, ts, ts);
+            }
+        }
 
         for (Entity e : world.getEntities()) {
             if (!e.isAlive()) {
@@ -77,6 +82,21 @@ public class Main extends Application {
                 gc.setFill(Color.ORANGE);
                 gc.fillOval(e.getX() - 9, e.getY() - 9, 18, 18);
             }
+        }
+    }
+
+    private Color colorOf(Terrain t) {
+        switch (t) {
+            case GRASS:
+                return Color.LIGHTGREEN;
+            case MUD:
+                return Color.SADDLEBROWN;
+            case FOREST:
+                return Color.DARKGREEN;
+            case WATER:
+                return Color.LIGHTBLUE;
+            default:
+                return Color.GRAY;
         }
     }
 
