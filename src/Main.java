@@ -13,13 +13,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        world = new World(800, 600);
-        world.add(new Rabbit(400, 300));
-        world.add(new Rabbit(200, 200));
+        world = new World(1280, 720);
+        world.add(new Rabbit(640, 360));
+        world.add(new Rabbit(300, 200));
 
-        canvas = new Canvas(800, 600);
+        canvas = new Canvas(1280, 720);
         Pane root = new Pane(canvas);
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1280, 720);
 
         stage.setTitle("Eco Sim");
         stage.setScene(scene);
