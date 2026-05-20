@@ -73,6 +73,14 @@ public class World {
         return grid[i][j];
     }
 
+    public void setTileAt(double x, double y, Terrain t) {
+        int i = (int) (x / tileSize);
+        int j = (int) (y / tileSize);
+        if (i >= 0 && i < gridW && j >= 0 && j < gridH) {
+            grid[i][j] = t;
+        }
+    }
+
     public void add(Entity e) {
         entities.add(e);
     }

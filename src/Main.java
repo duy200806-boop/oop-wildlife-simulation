@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -40,7 +41,9 @@ public class Main extends Application {
         canvas.setOnMouseClicked(e -> {
             double cx = e.getX();
             double cy = e.getY();
-            if (world.getTerrainAt(cx, cy) != Terrain.WATER) {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                world.setTileAt(cx, cy, Terrain.ROCK);
+            } else if (world.getTerrainAt(cx, cy) != Terrain.WATER) {
                 world.add(new Grass(cx, cy));
             }
         });
@@ -112,6 +115,8 @@ public class Main extends Application {
                 return Color.DARKOLIVEGREEN;
             case WATER:
                 return Color.LIGHTBLUE;
+            case ROCK:
+                return Color.GRAY;
             default:
                 return Color.GRAY;
         }

@@ -10,6 +10,6 @@ public abstract class Carnivore extends Animal {
 
     @Override
     protected boolean canEnter(Terrain t) {
-        return t != Terrain.BUSH;
+        return super.canEnter(t) && t != Terrain.BUSH;
     }
 }

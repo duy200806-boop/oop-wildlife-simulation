@@ -64,7 +64,7 @@ public abstract class Animal extends Entity {
     }
 
     protected boolean canEnter(Terrain t) {
-        return true;
+        return t != Terrain.ROCK;
     }
 
     public void setStrategy(SurvivalStrategy strategy) {
