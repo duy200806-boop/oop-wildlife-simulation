@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git -C \"d:/oop project\" commit -m \"init project\")",
-      "Bash(git -C \"d:/oop project\" push -u origin main)"
-    ]
-  }
-}
