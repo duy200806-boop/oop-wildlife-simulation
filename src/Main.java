@@ -37,6 +37,14 @@ public class Main extends Application {
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root, 1280, 720);
 
+        canvas.setOnMouseClicked(e -> {
+            double cx = e.getX();
+            double cy = e.getY();
+            if (world.getTerrainAt(cx, cy) != Terrain.WATER) {
+                world.add(new Grass(cx, cy));
+            }
+        });
+
         stage.setTitle("Eco Sim");
         stage.setScene(scene);
         stage.show();
