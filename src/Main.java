@@ -21,7 +21,10 @@ public class Main extends Application {
         world.add(new Rabbit(300, 200));
         world.add(new Rabbit(900, 500));
         world.add(new Rabbit(500, 600));
+        world.add(new Deer(800, 200));
+        world.add(new Deer(400, 500));
         world.add(new Wolf(100, 100));
+        world.add(new Tiger(1100, 600));
 
         canvas = new Canvas(1280, 720);
         Pane root = new Pane(canvas);
@@ -64,9 +67,15 @@ public class Main extends Application {
             } else if (e instanceof Rabbit) {
                 gc.setFill(Color.WHITE);
                 gc.fillOval(e.getX() - 5, e.getY() - 5, 10, 10);
+            } else if (e instanceof Deer) {
+                gc.setFill(Color.SADDLEBROWN);
+                gc.fillOval(e.getX() - 8, e.getY() - 8, 16, 16);
             } else if (e instanceof Wolf) {
                 gc.setFill(Color.DARKRED);
                 gc.fillOval(e.getX() - 7, e.getY() - 7, 14, 14);
+            } else if (e instanceof Tiger) {
+                gc.setFill(Color.ORANGE);
+                gc.fillOval(e.getX() - 9, e.getY() - 9, 18, 18);
             }
         }
     }

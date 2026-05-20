@@ -23,7 +23,7 @@ public class HunterStrategy implements SurvivalStrategy {
             if (e == self || !e.isAlive()) {
                 continue;
             }
-            if (!(e instanceof Rabbit)) {
+            if (!(e instanceof Herbivore)) {
                 continue;
             }
             double dx = e.getX() - self.getX();

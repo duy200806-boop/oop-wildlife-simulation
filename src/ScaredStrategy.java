@@ -26,7 +26,7 @@ public class ScaredStrategy implements SurvivalStrategy {
             if (!e.isAlive() || e == self) {
                 continue;
             }
-            if (!(e instanceof Wolf)) {
+            if (!(e instanceof Carnivore)) {
                 continue;
             }
             double dx = e.getX() - self.getX();
