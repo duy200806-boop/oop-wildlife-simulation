@@ -3,14 +3,13 @@ import javafx.animation.AnimationTimer;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 public class Main extends Application {
     private World world;
     private Canvas canvas;
+    private Renderer renderer = new BasicRenderer();
 
     @Override
     public void start(Stage stage) {
@@ -65,65 +64,10 @@ public class Main extends Application {
                 double dt = (now - last) / 1e9;
                 last = now;
                 world.tick(dt);
-                render();
+                renderer.render(canvas.getGraphicsContext2D(), world);
             }
         };
         timer.start();
-    }
-
-    private void render() {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        int ts = world.getTileSize();
-        for (int i = 0; i < world.getGridW(); i++) {
-            for (int j = 0; j < world.getGridH(); j++) {
-                gc.setFill(colorOf(world.getTile(i, j)));
-                gc.fillRect(i * ts, j * ts, ts, ts);
-            }
-        }
-
-        for (Entity e : world.getEntities()) {
-            if (!e.isAlive()) {
-                continue;
-            }
-            if (e instanceof Grass) {
-                gc.setFill(Color.DARKGREEN);
-                gc.fillRect(e.getX() - 3, e.getY() - 3, 6, 6);
-            } else if (e instanceof Rabbit) {
-                gc.setFill(Color.WHITE);
-                gc.fillOval(e.getX() - 5, e.getY() - 5, 10, 10);
-            } else if (e instanceof Deer) {
-                gc.setFill(Color.SADDLEBROWN);
-                gc.fillOval(e.getX() - 8, e.getY() - 8, 16, 16);
-            } else if (e instanceof Wolf) {
-                gc.setFill(Color.DARKRED);
-                gc.fillOval(e.getX() - 7, e.getY() - 7, 14, 14);
-            } else if (e instanceof Tiger) {
-                gc.setFill(Color.ORANGE);
-                gc.fillOval(e.getX() - 9, e.getY() - 9, 18, 18);
-            } else if (e instanceof Elephant) {
-                gc.setFill(Color.DARKGRAY);
-                gc.fillOval(e.getX() - 12, e.getY() - 12, 24, 24);
-            }
-        }
-    }
-
-    private Color colorOf(Terrain t) {
-        switch (t) {
-            case GRASS:
-                return Color.LIGHTGREEN;
-            case MUD:
-                return Color.SADDLEBROWN;
-            case FOREST:
-                return Color.DARKGREEN;
-            case BUSH:
-                return Color.DARKOLIVEGREEN;
-            case WATER:
-                return Color.LIGHTBLUE;
-            case ROCK:
-                return Color.GRAY;
-            default:
-                return Color.GRAY;
-        }
     }
 
     public static void main(String[] args) {
