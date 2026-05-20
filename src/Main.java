@@ -13,6 +13,7 @@ public class Main extends Application {
     private World world;
     private Canvas canvas;
     private Renderer renderer = new BasicRenderer();
+    private Camera camera = new Camera(1280, 720);
 
     @Override
     public void start(Stage stage) {
@@ -50,7 +51,14 @@ public class Main extends Application {
             }
         });
 
-        HBox controls = new HBox(toggleBtn);
+        Button zoomInBtn = new Button("Zoom +");
+        zoomInBtn.setOnAction(e -> camera.zoomIn());
+        Button zoomOutBtn = new Button("Zoom -");
+        zoomOutBtn.setOnAction(e -> camera.zoomOut());
+        Button zoomResetBtn = new Button("Reset");
+        zoomResetBtn.setOnAction(e -> camera.setZoom(1.0));
+
+        HBox controls = new HBox(8, toggleBtn, zoomInBtn, zoomOutBtn, zoomResetBtn);
         controls.setPadding(new Insets(5));
 
         BorderPane root = new BorderPane();
@@ -59,8 +67,9 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1280, 770);
 
         canvas.setOnMouseClicked(e -> {
-            double cx = e.getX();
-            double cy = e.getY();
+            double[] w = camera.screenToWorld(e.getX(), e.getY());
+            double cx = w[0];
+            double cy = w[1];
             if (e.getButton() == MouseButton.SECONDARY) {
                 world.setTileAt(cx, cy, Terrain.ROCK);
             } else if (world.getTerrainAt(cx, cy) != Terrain.WATER) {
@@ -84,7 +93,7 @@ public class Main extends Application {
                 double dt = (now - last) / 1e9;
                 last = now;
                 world.tick(dt);
-                renderer.render(canvas.getGraphicsContext2D(), world);
+                renderer.render(canvas.getGraphicsContext2D(), world, camera);
             }
         };
         timer.start();

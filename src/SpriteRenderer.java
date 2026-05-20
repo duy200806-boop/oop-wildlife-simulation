@@ -4,7 +4,13 @@ import javafx.scene.paint.Color;
 public class SpriteRenderer implements Renderer {
 
     @Override
-    public void render(GraphicsContext gc, World world) {
+    public void render(GraphicsContext gc, World world, Camera camera) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+        gc.save();
+        camera.apply(gc);
+
         int ts = world.getTileSize();
         for (int i = 0; i < world.getGridW(); i++) {
             for (int j = 0; j < world.getGridH(); j++) {
@@ -19,6 +25,8 @@ public class SpriteRenderer implements Renderer {
             }
             drawEntity(gc, e);
         }
+
+        gc.restore();
     }
 
     private void drawEntity(GraphicsContext gc, Entity e) {

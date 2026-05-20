@@ -1,5 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
 
 public interface Renderer {
-    void render(GraphicsContext gc, World world);
+    void render(GraphicsContext gc, World world, Camera camera);
 }
