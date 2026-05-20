@@ -6,6 +6,8 @@ public abstract class Animal extends Entity {
     protected double hunger = 0;
     protected double hungerRate = 0.01;
     protected double maxHunger = 1.0;
+    private SurvivalStrategy normalStrategy;
+    private boolean aggressive = false;
 
     public Animal(double x, double y, double speed) {
         super(x, y);
@@ -19,6 +21,14 @@ public abstract class Animal extends Entity {
         if (hunger >= maxHunger) {
             alive = false;
             return;
+        }
+        if (hunger > 0.7 && !aggressive) {
+            normalStrategy = strategy;
+            strategy = new AggressiveStrategy();
+            aggressive = true;
+        } else if (hunger < 0.3 && aggressive) {
+            strategy = normalStrategy;
+            aggressive = false;
         }
         if (strategy != null) {
             strategy.act(this, world, dt);
