@@ -15,16 +15,23 @@ public class Main extends Application {
     public void start(Stage stage) {
         world = new World(1280, 720);
         for (int i = 0; i < 30; i++) {
-            world.add(new Grass(Math.random() * 1280, Math.random() * 720));
+            double gx, gy;
+            int tries = 0;
+            do {
+                gx = Math.random() * 1280;
+                gy = Math.random() * 720;
+                tries++;
+            } while (world.getTerrainAt(gx, gy) == Terrain.WATER && tries < 10);
+            world.add(new Grass(gx, gy));
         }
         world.add(new Rabbit(640, 360));
         world.add(new Rabbit(300, 200));
-        world.add(new Rabbit(900, 500));
-        world.add(new Rabbit(500, 600));
+        world.add(new Rabbit(900, 200));
+        world.add(new Rabbit(500, 300));
         world.add(new Deer(800, 200));
         world.add(new Deer(400, 500));
         world.add(new Wolf(100, 100));
-        world.add(new Tiger(1100, 600));
+        world.add(new Tiger(1100, 100));
 
         canvas = new Canvas(1280, 720);
         Pane root = new Pane(canvas);

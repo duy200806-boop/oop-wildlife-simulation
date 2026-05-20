@@ -21,18 +21,28 @@ public class World {
                 grid[i][j] = Terrain.GRASS;
             }
         }
-        for (int i = 5; i < 12; i++) {
-            for (int j = 8; j < 14; j++) {
+        for (int i = 0; i < 15; i++) {
+            for (int j = 13; j < gridH; j++) {
+                grid[i][j] = Terrain.FOREST;
+            }
+        }
+        for (int i = 28; i < gridW; i++) {
+            for (int j = 13; j < gridH; j++) {
+                grid[i][j] = Terrain.WATER;
+            }
+        }
+        for (int i = 18; i < 23; i++) {
+            for (int j = 9; j < 13; j++) {
                 grid[i][j] = Terrain.MUD;
             }
         }
-        for (int i = 25; i < 32; i++) {
-            for (int j = 3; j < 8; j++) {
+        for (int i = 5; i < 10; i++) {
+            for (int j = 3; j < 7; j++) {
                 grid[i][j] = Terrain.BUSH;
             }
         }
-        for (int i = 20; i < 25; i++) {
-            for (int j = 15; j < 20; j++) {
+        for (int i = 28; i < 35; i++) {
+            for (int j = 3; j < 8; j++) {
                 grid[i][j] = Terrain.BUSH;
             }
         }
