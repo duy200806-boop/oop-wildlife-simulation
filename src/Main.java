@@ -13,7 +13,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        world = new World();
+        world = new World(800, 600);
         world.add(new Rabbit(400, 300));
         world.add(new Rabbit(200, 200));
 
