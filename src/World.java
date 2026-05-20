@@ -9,6 +9,11 @@ public class World {
     private final int gridH;
     private final Terrain[][] grid;
     private List<Entity> entities = new ArrayList<>();
+    private final EventBus eventBus = new EventBus();
+
+    public EventBus getEventBus() {
+        return eventBus;
+    }
 
     public World(double width, double height) {
         this.width = width;

@@ -20,6 +20,7 @@ public abstract class Animal extends Entity {
         hunger += hungerRate * dt;
         if (hunger >= maxHunger) {
             alive = false;
+            world.getEventBus().publish(EventType.DEATH);
             return;
         }
         if (hunger > 0.7 && !aggressive) {
@@ -49,6 +50,7 @@ public abstract class Animal extends Entity {
             double dy = e.getY() - y;
             if (Math.sqrt(dx * dx + dy * dy) < 10) {
                 eat(e);
+                world.getEventBus().publish(this instanceof Carnivore ? EventType.ATTACK : EventType.EAT);
                 return;
             }
         }

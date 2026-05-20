@@ -38,6 +38,8 @@ public class Main extends Application {
         world.add(new Tiger(1100, 100));
         world.add(new Elephant(700, 400));
 
+        new AudioSystem(world.getEventBus());
+
         canvas = new Canvas(1280, 720);
 
         Button toggleBtn = new Button("Renderer: Basic");
