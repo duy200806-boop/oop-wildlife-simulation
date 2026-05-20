@@ -14,6 +14,7 @@ public class Main extends Application {
     private Canvas canvas;
     private Renderer renderer = new BasicRenderer();
     private Camera camera = new Camera(1280, 720);
+    private StatisticsCollector stats;
 
     @Override
     public void start(Stage stage) {
@@ -39,6 +40,7 @@ public class Main extends Application {
         world.add(new Elephant(700, 400));
 
         new AudioSystem(world.getEventBus());
+        stats = new StatisticsCollector(world.getEventBus());
 
         canvas = new Canvas(1280, 720);
 
@@ -60,7 +62,18 @@ public class Main extends Application {
         Button zoomResetBtn = new Button("Reset");
         zoomResetBtn.setOnAction(e -> camera.setZoom(1.0));
 
-        HBox controls = new HBox(8, toggleBtn, zoomInBtn, zoomOutBtn, zoomResetBtn);
+        Button exportBtn = new Button("Export CSV");
+        exportBtn.setOnAction(e -> {
+            String filename = "stats-" + System.currentTimeMillis() + ".csv";
+            try {
+                stats.exportCsv(filename);
+                System.out.println("Stats exported to " + filename);
+            } catch (Exception ex) {
+                System.out.println("Export failed: " + ex.getMessage());
+            }
+        });
+
+        HBox controls = new HBox(8, toggleBtn, zoomInBtn, zoomOutBtn, zoomResetBtn, exportBtn);
         controls.setPadding(new Insets(5));
 
         BorderPane root = new BorderPane();
@@ -95,6 +108,7 @@ public class Main extends Application {
                 double dt = (now - last) / 1e9;
                 last = now;
                 world.tick(dt);
+                stats.tick(dt, world);
                 renderer.render(canvas.getGraphicsContext2D(), world, camera);
             }
         };
