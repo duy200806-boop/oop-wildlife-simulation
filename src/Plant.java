@@ -4,6 +4,6 @@ public abstract class Plant extends Entity {
     }
 
     @Override
-    public void update(double dt) {
+    public void update(double dt, World world) {
     }
 }

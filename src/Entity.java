@@ -8,7 +8,7 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public abstract void update(double dt);
+    public abstract void update(double dt, World world);
 
     public double getX() {
         return x;

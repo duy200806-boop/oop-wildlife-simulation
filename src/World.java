@@ -18,7 +18,7 @@ public class World {
     public void tick(double dt) {
         for (Entity e : entities) {
             if (e.isAlive()) {
-                e.update(dt);
+                e.update(dt, this);
                 if (e.x < 0) e.x = 0;
                 if (e.x > width) e.x = width;
                 if (e.y < 0) e.y = 0;
