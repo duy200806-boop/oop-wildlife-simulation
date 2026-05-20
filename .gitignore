@@ -1,0 +1,21 @@
+# Compiled
+*.class
+out/
+bin/
+target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/private/
+
+# OS
+.DS_Store
+Thumbs.db
