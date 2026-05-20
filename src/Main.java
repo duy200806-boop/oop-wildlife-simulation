@@ -93,6 +93,8 @@ public class Main extends Application {
                 return Color.SADDLEBROWN;
             case FOREST:
                 return Color.DARKGREEN;
+            case BUSH:
+                return Color.DARKOLIVEGREEN;
             case WATER:
                 return Color.LIGHTBLUE;
             default:

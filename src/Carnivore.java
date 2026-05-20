@@ -7,4 +7,9 @@ public abstract class Carnivore extends Animal {
     protected boolean canEat(Entity e) {
         return e instanceof Herbivore;
     }
+
+    @Override
+    protected boolean canEnter(Terrain t) {
+        return t != Terrain.BUSH;
+    }
 }

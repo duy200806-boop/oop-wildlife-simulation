@@ -26,6 +26,16 @@ public class World {
                 grid[i][j] = Terrain.MUD;
             }
         }
+        for (int i = 25; i < 32; i++) {
+            for (int j = 3; j < 8; j++) {
+                grid[i][j] = Terrain.BUSH;
+            }
+        }
+        for (int i = 20; i < 25; i++) {
+            for (int j = 15; j < 20; j++) {
+                grid[i][j] = Terrain.BUSH;
+            }
+        }
     }
 
     public Terrain getTerrainAt(double x, double y) {

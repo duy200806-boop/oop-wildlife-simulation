@@ -55,8 +55,16 @@ public abstract class Animal extends Entity {
 
     protected void move(double dt, World world) {
         double factor = world.getTerrainAt(x, y).speedFactor;
-        x += Math.cos(direction) * speed * factor * dt;
-        y += Math.sin(direction) * speed * factor * dt;
+        double newX = x + Math.cos(direction) * speed * factor * dt;
+        double newY = y + Math.sin(direction) * speed * factor * dt;
+        if (canEnter(world.getTerrainAt(newX, newY))) {
+            x = newX;
+            y = newY;
+        }
+    }
+
+    protected boolean canEnter(Terrain t) {
+        return true;
     }
 
     public void setStrategy(SurvivalStrategy strategy) {
