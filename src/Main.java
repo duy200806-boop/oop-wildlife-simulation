@@ -33,6 +33,7 @@ public class Main extends Application {
         world.add(new Deer(400, 500));
         world.add(new Wolf(100, 100));
         world.add(new Tiger(1100, 100));
+        world.add(new Elephant(700, 400));
 
         canvas = new Canvas(1280, 720);
         Pane root = new Pane(canvas);
@@ -99,6 +100,9 @@ public class Main extends Application {
             } else if (e instanceof Tiger) {
                 gc.setFill(Color.ORANGE);
                 gc.fillOval(e.getX() - 9, e.getY() - 9, 18, 18);
+            } else if (e instanceof Elephant) {
+                gc.setFill(Color.DARKGRAY);
+                gc.fillOval(e.getX() - 12, e.getY() - 12, 24, 24);
             }
         }
     }
