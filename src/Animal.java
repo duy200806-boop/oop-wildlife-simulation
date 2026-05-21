@@ -106,7 +106,7 @@ public abstract class Animal extends Entity {
             }
             double dx = e.getX() - x;
             double dy = e.getY() - y;
-            if (Math.sqrt(dx * dx + dy * dy) < 10) {
+            if (Math.sqrt(dx * dx + dy * dy) < 35) {
                 eat(e);
                 world.getEventBus().publish(this instanceof Carnivore ? EventType.ATTACK : EventType.EAT);
                 return;
@@ -136,7 +136,7 @@ public abstract class Animal extends Entity {
     }
 
     protected boolean canEnter(Terrain t) {
-        return t != Terrain.ROCK;
+        return t != Terrain.ROCK && t != Terrain.WATER;
     }
 
     public void setStrategy(SurvivalStrategy strategy) {

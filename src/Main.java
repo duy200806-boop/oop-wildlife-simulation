@@ -29,7 +29,7 @@ public class Main extends Application {
         world = new World(worldW, worldH);
         camera = new Camera(worldW, worldH);
 
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 100; i++) {
             double[] p = randomNonWaterPos(worldW, worldH);
             world.add(new Grass(p[0], p[1]));
         }
