@@ -1,6 +1,7 @@
 # Compiled
 *.class
 out/
+out_temp/
 bin/
 target/
 

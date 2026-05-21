@@ -23,7 +23,7 @@
 ### 3. Giao diện Đồ họa & Điều khiển (ViewLogic)
 *   **Hai chế độ hiển thị:**
     *   **Basic:** Vẽ các hình học cơ bản có màu sắc đặc trưng đại diện cho từng loài (dành cho máy cấu hình yếu).
-    *   **Sprite (Đồ họa):** Đọc chuỗi ảnh động thực tế từ folder tài nguyên để hiển thị sinh vật di chuyển mượt mà.
+    *   **Sprite (Đồ họa):** Vẽ các sinh vật với chi tiết phong phú hơn (tai, sọc, vòi...) bằng các shape kết hợp.
 *   **Tương tác thủ công:**
     *   `Click chuột trái`: Gieo mầm Cỏ tại vị trí click.
     *   `Click chuột phải`: Đặt vách đá vật cản (`ROCK`).
@@ -68,13 +68,3 @@ Dự án tuân thủ nghiêm ngặt mô hình **MVC** nhằm tách biệt hoàn 
 3.  Click chuột phải vào thư mục `src` ➔ Chọn `Mark Directory as` ➔ `Sources Root`.
 4.  Mở file [Main.java](file:///d:/oop%20project/src/Main.java) ➔ Click chuột phải chọn `Run 'Main.main()'`.
 
-### 🎵 Cách thêm Âm thanh và Hình ảnh (Sprites)
-Để hiển thị đầy đủ hình ảnh động và phát âm thanh sinh động, bạn hãy bỏ các tệp tin tài nguyên vào các thư mục tương ứng:
-
-*   **m thanh (.wav):** Bỏ vào thư mục `src/` (hoặc `src/resources/audio/`):
-    - `roar.wav` (Tiếng hổ gầm khi tấn công).
-    - `eat.wav` (Tiếng nhai nhóp nhép khi ăn).
-    - `death.wav` (Tiếng kêu khi động vật chết).
-*   **Hình ảnh (.png):** Bỏ vào thư mục `src/resources/sprites/`:
-    - File tĩnh: `rabbit.png`, `wolf.png`, `deer.png`, `tiger.png`, `elephant.png`, `fish.png`, `duck.png`, `grass.png`, `fruit_tree.png`.
-    - File động (nếu có): Đổi tên theo định dạng `prefix_0.png` đến `prefix_7.png` (ví dụ: `rabbit_0.png` đến `rabbit_7.png`). Chương trình sẽ tự động dựng hoạt ảnh chuyển động.

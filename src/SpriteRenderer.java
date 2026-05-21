@@ -1,73 +1,12 @@
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 public class SpriteRenderer implements Renderer {
-    private static final String SPRITE_PATH = "/resources/sprites/";
-
-    private final Image[] grass;
-    private final Image[] fruitTree;
-    private final Image[] rabbit;
-    private final Image[] deer;
-    private final Image[] wolf;
-    private final Image[] tiger;
-    private final Image[] elephant;
-    private final Image[] fish;
-    private final Image[] duck;
-
-    private double frameTime = 0;
-    private int currentFrame = 0;
-
-    public SpriteRenderer() {
-        grass = loadFrames("grass");
-        fruitTree = loadFrames("fruit_tree");
-        rabbit = loadFrames("rabbit");
-        deer = loadFrames("deer");
-        wolf = loadFrames("wolf");
-        tiger = loadFrames("tiger");
-        elephant = loadFrames("elephant");
-        fish = loadFrames("fish");
-        duck = loadFrames("duck");
-    }
-
-    private Image[] loadFrames(String prefix) {
-        List<Image> list = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            Image img = loadOne(SPRITE_PATH + prefix + "_" + i + ".png");
-            if (img == null) break;
-            list.add(img);
-        }
-        if (list.isEmpty()) {
-            Image img = loadOne(SPRITE_PATH + prefix + ".png");
-            if (img != null) list.add(img);
-        }
-        return list.toArray(new Image[0]);
-    }
-
-    private Image loadOne(String path) {
-        try {
-            InputStream is = getClass().getResourceAsStream(path);
-            if (is == null) return null;
-            return new Image(is);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     @Override
     public void render(GraphicsContext gc, World world, Camera camera) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-
-        frameTime += 1.0 / 60;
-        if (frameTime > 0.15) {
-            frameTime = 0;
-            currentFrame++;
-        }
 
         gc.save();
         camera.apply(gc);
@@ -82,50 +21,13 @@ public class SpriteRenderer implements Renderer {
 
         for (Entity e : world.getEntities()) {
             if (!e.isAlive()) continue;
-            Image img = pickFrame(framesFor(e));
-            if (img != null) {
-                double size = sizeFor(e);
-                gc.drawImage(img, e.getX() - size / 2, e.getY() - size / 2, size, size);
-            } else {
-                drawProcedural(gc, e);
-            }
+            drawEntity(gc, e);
         }
 
         gc.restore();
     }
 
-    private Image[] framesFor(Entity e) {
-        if (e instanceof Grass) return grass;
-        if (e instanceof FruitTree) return fruitTree;
-        if (e instanceof Rabbit) return rabbit;
-        if (e instanceof Deer) return deer;
-        if (e instanceof Wolf) return wolf;
-        if (e instanceof Tiger) return tiger;
-        if (e instanceof Elephant) return elephant;
-        if (e instanceof Fish) return fish;
-        if (e instanceof Duck) return duck;
-        return null;
-    }
-
-    private Image pickFrame(Image[] frames) {
-        if (frames == null || frames.length == 0) return null;
-        return frames[Math.floorMod(currentFrame, frames.length)];
-    }
-
-    private double sizeFor(Entity e) {
-        if (e instanceof Grass) return 12;
-        if (e instanceof FruitTree) return 28;
-        if (e instanceof Rabbit) return 18;
-        if (e instanceof Deer) return 26;
-        if (e instanceof Wolf) return 24;
-        if (e instanceof Tiger) return 30;
-        if (e instanceof Elephant) return 40;
-        if (e instanceof Fish) return 14;
-        if (e instanceof Duck) return 16;
-        return 12;
-    }
-
-    private void drawProcedural(GraphicsContext gc, Entity e) {
+    private void drawEntity(GraphicsContext gc, Entity e) {
         double x = e.getX();
         double y = e.getY();
 
