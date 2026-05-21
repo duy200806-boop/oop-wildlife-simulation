@@ -1,5 +1,7 @@
 public enum EventType {
     ATTACK,
     EAT,
-    DEATH
+    DEATH,
+    BIRD_CHIRP,
+    LEAVES_RUSTLE
 }

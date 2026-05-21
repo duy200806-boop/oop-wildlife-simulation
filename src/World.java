@@ -191,6 +191,9 @@ public class World {
     }
 
     private double cleanupTimer = 0;
+    private double birdTimer = 0;
+    private double birdInterval = 10;
+    private double rustleTimer = 0;
 
     public void tick(double dt) {
         int size = entities.size();
@@ -208,6 +211,23 @@ public class World {
         if (cleanupTimer > 1.0) {
             cleanupTimer = 0;
             entities.removeIf(e -> !e.isAlive());
+        }
+        birdTimer += dt;
+        if (birdTimer >= birdInterval) {
+            birdTimer = 0;
+            birdInterval = 8 + Math.random() * 8;
+            eventBus.publish(EventType.BIRD_CHIRP);
+        }
+        rustleTimer += dt;
+        if (rustleTimer > 0.7) {
+            rustleTimer = 0;
+            for (Entity e : entities) {
+                if (!e.isAlive() || !(e instanceof Animal) || e instanceof WaterAnimal) continue;
+                if (getTerrainAt(e.getX(), e.getY()) == Terrain.FOREST) {
+                    eventBus.publish(EventType.LEAVES_RUSTLE);
+                    break;
+                }
+            }
         }
     }
 
