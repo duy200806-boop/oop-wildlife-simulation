@@ -2,6 +2,8 @@ public abstract class Carnivore extends Animal {
     protected double stamina = 1.0;
     protected double maxStamina = 1.0;
     protected double sprintMultiplier = 1.7;
+    protected double breedTimer = 0;
+    protected double breedInterval = 40.0;
 
     public Carnivore(double x, double y, double speed) {
         super(x, y, speed);
@@ -16,6 +18,33 @@ public abstract class Carnivore extends Animal {
     protected boolean canEnter(Terrain t) {
         return super.canEnter(t) && t != Terrain.BUSH;
     }
+
+    @Override
+    public void update(double dt, World world) {
+        super.update(dt, world);
+        if (!alive) {
+            return;
+        }
+        Season s = world.getSeason();
+        if (s == Season.DROUGHT) {
+            return;
+        }
+        double effInterval = (s == Season.BREEDING) ? breedInterval : breedInterval * 3;
+        if (hunger < 0.3) {
+            breedTimer += dt;
+            if (breedTimer >= effInterval) {
+                breedTimer = 0;
+                double ox = (Math.random() - 0.5) * 30;
+                double oy = (Math.random() - 0.5) * 30;
+                Carnivore child = createChild(x + ox, y + oy);
+                if (child != null) {
+                    world.add(child);
+                }
+            }
+        }
+    }
+
+    protected abstract Carnivore createChild(double x, double y);
 
     @Override
     protected void move(double dt, World world) {

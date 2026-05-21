@@ -4,11 +4,11 @@ public abstract class Animal extends Entity {
     protected SurvivalStrategy strategy;
 
     protected double hunger = 0;
-    protected double hungerRate = 0.01;
+    protected double hungerRate = 0.004;
     protected double maxHunger = 1.0;
 
     protected double thirst = 0;
-    protected double thirstRate = 0.013;
+    protected double thirstRate = 0.005;
     protected double maxThirst = 1.0;
 
     protected boolean sprinting = false;
@@ -83,14 +83,14 @@ public abstract class Animal extends Entity {
 
     protected void tryDrink(World world) {
         Terrain[] neighbors = {
-                world.getTerrainAt(x, y - 12),
-                world.getTerrainAt(x, y + 12),
-                world.getTerrainAt(x + 12, y),
-                world.getTerrainAt(x - 12, y)
+                world.getTerrainAt(x, y - 25), world.getTerrainAt(x, y + 25),
+                world.getTerrainAt(x + 25, y), world.getTerrainAt(x - 25, y),
+                world.getTerrainAt(x + 18, y + 18), world.getTerrainAt(x - 18, y - 18),
+                world.getTerrainAt(x + 18, y - 18), world.getTerrainAt(x - 18, y + 18)
         };
         for (Terrain t : neighbors) {
             if (t == Terrain.WATER) {
-                thirst = Math.max(0, thirst - 0.6);
+                thirst = Math.max(0, thirst - 0.9);
                 return;
             }
         }
@@ -120,7 +120,7 @@ public abstract class Animal extends Entity {
 
     protected void eat(Entity food) {
         food.alive = false;
-        hunger = Math.max(0, hunger - 0.5);
+        hunger = Math.max(0, hunger - 0.8);
     }
 
     protected void move(double dt, World world) {

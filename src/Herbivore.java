@@ -17,9 +17,14 @@ public abstract class Herbivore extends Animal {
         if (!alive) {
             return;
         }
-        if (world.getSeason() == Season.BREEDING && hunger < 0.3) {
+        Season s = world.getSeason();
+        if (s == Season.DROUGHT) {
+            return;
+        }
+        double effInterval = (s == Season.BREEDING) ? breedInterval : breedInterval * 3;
+        if (hunger < 0.4) {
             breedTimer += dt;
-            if (breedTimer >= breedInterval) {
+            if (breedTimer >= effInterval) {
                 breedTimer = 0;
                 double ox = (Math.random() - 0.5) * 20;
                 double oy = (Math.random() - 0.5) * 20;

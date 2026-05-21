@@ -3,4 +3,9 @@ public class Tiger extends Carnivore {
         super(x, y, 80);
         strategy = new HunterStrategy(250);
     }
+
+    @Override
+    protected Carnivore createChild(double x, double y) {
+        return new Tiger(x, y);
+    }
 }
