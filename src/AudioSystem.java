@@ -12,7 +12,6 @@ public class AudioSystem implements EventListener {
             String base = "/resources/audio/";
             load(EventType.ATTACK, base + "roar.wav");
             load(EventType.EAT, base + "eat.wav");
-            load(EventType.DEATH, base + "death.wav");
             load(EventType.BIRD_CHIRP, base + "bird.wav");
             load(EventType.LEAVES_RUSTLE, base + "leaves.wav");
         } catch (Throwable t) {

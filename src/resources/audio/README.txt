@@ -3,7 +3,6 @@ Drop .wav files here. AudioSystem will load them on startup.
 Required files:
   roar.wav     - played when carnivore catches prey
   eat.wav      - played when herbivore eats plant
-  death.wav    - played when animal dies of starvation/thirst
   bird.wav     - ambient bird chirp, every 8-16 seconds randomly
   leaves.wav   - leaves rustling, every 0.7 seconds while any land animal is in FOREST
 
