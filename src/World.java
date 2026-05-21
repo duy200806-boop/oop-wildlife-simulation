@@ -160,8 +160,12 @@ public class World {
         entities.add(e);
     }
 
+    private double cleanupTimer = 0;
+
     public void tick(double dt) {
-        for (Entity e : entities) {
+        int size = entities.size();
+        for (int i = 0; i < size; i++) {
+            Entity e = entities.get(i);
             if (e.isAlive()) {
                 e.update(dt, this);
                 if (e.x < 0) e.x = 0;
@@ -169,6 +173,11 @@ public class World {
                 if (e.y < 0) e.y = 0;
                 if (e.y > height) e.y = height;
             }
+        }
+        cleanupTimer += dt;
+        if (cleanupTimer > 1.0) {
+            cleanupTimer = 0;
+            entities.removeIf(e -> !e.isAlive());
         }
     }
 
