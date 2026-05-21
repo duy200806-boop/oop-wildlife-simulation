@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class World {
     private final double width;
@@ -21,34 +22,103 @@ public class World {
         this.gridW = (int) (width / tileSize);
         this.gridH = (int) (height / tileSize);
         this.grid = new Terrain[gridW][gridH];
+        generateTerrain();
+    }
+
+    private void generateTerrain() {
+        Random rng = new Random();
         for (int i = 0; i < gridW; i++) {
             for (int j = 0; j < gridH; j++) {
                 grid[i][j] = Terrain.GRASS;
             }
         }
-        for (int i = 0; i < 15; i++) {
-            for (int j = 13; j < gridH; j++) {
-                grid[i][j] = Terrain.FOREST;
+
+        boolean[][] water = new boolean[gridW][gridH];
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                if (i >= gridW * 0.6 && j >= gridH * 0.55) {
+                    water[i][j] = rng.nextDouble() < 0.55;
+                }
             }
         }
-        for (int i = 28; i < gridW; i++) {
-            for (int j = 13; j < gridH; j++) {
-                grid[i][j] = Terrain.WATER;
+        water = smoothCa(water, 5);
+        overlay(water, Terrain.WATER, false);
+
+        boolean[][] forest = new boolean[gridW][gridH];
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                if (i < gridW * 0.45) {
+                    forest[i][j] = rng.nextDouble() < 0.5;
+                }
             }
         }
-        for (int i = 18; i < 23; i++) {
-            for (int j = 9; j < 13; j++) {
-                grid[i][j] = Terrain.MUD;
+        forest = smoothCa(forest, 5);
+        overlay(forest, Terrain.FOREST, true);
+
+        boolean[][] bush = new boolean[gridW][gridH];
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                bush[i][j] = rng.nextDouble() < 0.18;
             }
         }
-        for (int i = 5; i < 10; i++) {
-            for (int j = 3; j < 7; j++) {
-                grid[i][j] = Terrain.BUSH;
+        bush = smoothCa(bush, 3);
+        overlay(bush, Terrain.BUSH, true);
+
+        boolean[][] mud = new boolean[gridW][gridH];
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                mud[i][j] = rng.nextDouble() < 0.08;
             }
         }
-        for (int i = 28; i < 35; i++) {
-            for (int j = 3; j < 8; j++) {
-                grid[i][j] = Terrain.BUSH;
+        mud = smoothCa(mud, 2);
+        overlay(mud, Terrain.MUD, true);
+    }
+
+    private boolean[][] smoothCa(boolean[][] g, int iters) {
+        for (int iter = 0; iter < iters; iter++) {
+            boolean[][] next = new boolean[gridW][gridH];
+            for (int i = 0; i < gridW; i++) {
+                for (int j = 0; j < gridH; j++) {
+                    int n = neighborCount(g, i, j);
+                    if (g[i][j]) {
+                        next[i][j] = n >= 4;
+                    } else {
+                        next[i][j] = n >= 5;
+                    }
+                }
+            }
+            g = next;
+        }
+        return g;
+    }
+
+    private int neighborCount(boolean[][] g, int x, int y) {
+        int n = 0;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) {
+                    continue;
+                }
+                int nx = x + dx;
+                int ny = y + dy;
+                if (nx >= 0 && nx < gridW && ny >= 0 && ny < gridH && g[nx][ny]) {
+                    n++;
+                }
+            }
+        }
+        return n;
+    }
+
+    private void overlay(boolean[][] g, Terrain t, boolean onlyOnGrass) {
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                if (!g[i][j]) {
+                    continue;
+                }
+                if (onlyOnGrass && grid[i][j] != Terrain.GRASS) {
+                    continue;
+                }
+                grid[i][j] = t;
             }
         }
     }
