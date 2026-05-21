@@ -109,6 +109,9 @@ public abstract class Animal extends Entity {
             if (Math.sqrt(dx * dx + dy * dy) < 35) {
                 eat(e);
                 world.getEventBus().publish(this instanceof Carnivore ? EventType.ATTACK : EventType.EAT);
+                if (e instanceof Animal) {
+                    world.getEventBus().publish(EventType.DEATH);
+                }
                 return;
             }
         }
