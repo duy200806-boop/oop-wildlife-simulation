@@ -33,9 +33,43 @@ public abstract class Animal extends Entity {
         if (brain != null) {
             brain.act(this, world, dt);
         }
+        applySeparation(world);
         move(dt, world);
         tryEat(world);
         tryDrink(world);
+    }
+
+    private void applySeparation(World world) {
+        if (this instanceof ApexEntity) {
+            return;
+        }
+        double pushX = 0, pushY = 0;
+        double range = 35;
+        for (Entity e : world.getEntities()) {
+            if (e == this || !e.isAlive() || !(e instanceof Animal)) {
+                continue;
+            }
+            boolean isBig = e instanceof ApexEntity;
+            boolean isPred = (e instanceof Carnivore) && (this instanceof Herbivore);
+            if (!isBig && !isPred) {
+                continue;
+            }
+            double dx = x - e.getX();
+            double dy = y - e.getY();
+            double d2 = dx * dx + dy * dy;
+            if (d2 > range * range || d2 < 0.01) {
+                continue;
+            }
+            double d = Math.sqrt(d2);
+            double strength = (range - d) / range;
+            pushX += (dx / d) * strength;
+            pushY += (dy / d) * strength;
+        }
+        if (pushX != 0 || pushY != 0) {
+            double dx = Math.cos(direction) + pushX;
+            double dy = Math.sin(direction) + pushY;
+            direction = Math.atan2(dy, dx);
+        }
     }
 
     private SurvivalStrategy pickBrain() {
