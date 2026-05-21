@@ -8,12 +8,16 @@ public class AudioSystem implements EventListener {
     private final Map<EventType, AudioClip> clips = new EnumMap<>(EventType.class);
 
     public AudioSystem(EventBus bus) {
-        String base = "/resources/audio/";
-        load(EventType.ATTACK, base + "roar.wav");
-        load(EventType.EAT, base + "eat.wav");
-        load(EventType.DEATH, base + "death.wav");
-        load(EventType.BIRD_CHIRP, base + "bird.wav");
-        load(EventType.LEAVES_RUSTLE, base + "leaves.wav");
+        try {
+            String base = "/resources/audio/";
+            load(EventType.ATTACK, base + "roar.wav");
+            load(EventType.EAT, base + "eat.wav");
+            load(EventType.DEATH, base + "death.wav");
+            load(EventType.BIRD_CHIRP, base + "bird.wav");
+            load(EventType.LEAVES_RUSTLE, base + "leaves.wav");
+        } catch (Throwable t) {
+            System.out.println("[Audio Init Error] " + t.getClass().getSimpleName() + ": " + t.getMessage());
+        }
         for (EventType t : EventType.values()) {
             bus.subscribe(t, this);
         }
@@ -22,10 +26,14 @@ public class AudioSystem implements EventListener {
     private void load(EventType type, String path) {
         try {
             URL url = getClass().getResource(path);
-            if (url != null) {
-                clips.put(type, new AudioClip(url.toExternalForm()));
+            if (url == null) {
+                System.out.println("[Audio] not found: " + path);
+                return;
             }
-        } catch (Exception ignored) {
+            clips.put(type, new AudioClip(url.toExternalForm()));
+            System.out.println("[Audio] loaded: " + path);
+        } catch (Throwable t) {
+            System.out.println("[Audio Load Error] " + path + " - " + t.getClass().getSimpleName() + ": " + t.getMessage());
         }
     }
 
@@ -33,7 +41,11 @@ public class AudioSystem implements EventListener {
     public void onEvent(EventType type) {
         AudioClip clip = clips.get(type);
         if (clip != null) {
-            clip.play();
+            try {
+                clip.play();
+            } catch (Throwable t) {
+                System.out.println("[Audio Error] " + type + " - " + t.getMessage());
+            }
         } else {
             System.out.println("[Audio] " + type);
         }
