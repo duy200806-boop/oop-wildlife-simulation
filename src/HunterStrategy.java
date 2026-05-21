@@ -14,6 +14,7 @@ public class HunterStrategy implements SurvivalStrategy {
         double dx = prey.getX() - self.getX();
         double dy = prey.getY() - self.getY();
         self.direction = Math.atan2(dy, dx);
+        self.sprinting = true;
     }
 
     private Entity findNearestPrey(Animal self, World world) {

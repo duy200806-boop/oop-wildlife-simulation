@@ -11,6 +11,8 @@ public abstract class Animal extends Entity {
     protected double thirstRate = 0.013;
     protected double maxThirst = 1.0;
 
+    protected boolean sprinting = false;
+
     private final SurvivalStrategy aggressiveStrategy = new AggressiveStrategy();
     private final SurvivalStrategy thirstyStrategy = new ThirstyStrategy();
 
@@ -29,6 +31,7 @@ public abstract class Animal extends Entity {
             world.getEventBus().publish(EventType.DEATH);
             return;
         }
+        sprinting = false;
         SurvivalStrategy brain = pickBrain();
         if (brain != null) {
             brain.act(this, world, dt);
