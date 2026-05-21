@@ -158,6 +158,26 @@ public class World {
         return grid[i][j];
     }
 
+    public double[] findNearestWaterTile(double x, double y) {
+        double bestDist = Double.MAX_VALUE;
+        int bestI = -1, bestJ = -1;
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                if (grid[i][j] != Terrain.WATER) continue;
+                double cx = (i + 0.5) * tileSize;
+                double cy = (j + 0.5) * tileSize;
+                double d = (cx - x) * (cx - x) + (cy - y) * (cy - y);
+                if (d < bestDist) {
+                    bestDist = d;
+                    bestI = i;
+                    bestJ = j;
+                }
+            }
+        }
+        if (bestI < 0) return null;
+        return new double[] { (bestI + 0.5) * tileSize, (bestJ + 0.5) * tileSize };
+    }
+
     public void setTileAt(double x, double y, Terrain t) {
         int i = (int) (x / tileSize);
         int j = (int) (y / tileSize);

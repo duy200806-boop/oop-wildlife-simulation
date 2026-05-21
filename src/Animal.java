@@ -6,8 +6,13 @@ public abstract class Animal extends Entity {
     protected double hunger = 0;
     protected double hungerRate = 0.01;
     protected double maxHunger = 1.0;
-    private SurvivalStrategy normalStrategy;
-    private boolean aggressive = false;
+
+    protected double thirst = 0;
+    protected double thirstRate = 0.013;
+    protected double maxThirst = 1.0;
+
+    private final SurvivalStrategy aggressiveStrategy = new AggressiveStrategy();
+    private final SurvivalStrategy thirstyStrategy = new ThirstyStrategy();
 
     public Animal(double x, double y, double speed) {
         super(x, y);
@@ -18,24 +23,40 @@ public abstract class Animal extends Entity {
     @Override
     public void update(double dt, World world) {
         hunger += hungerRate * dt;
-        if (hunger >= maxHunger) {
+        thirst += thirstRate * dt;
+        if (hunger >= maxHunger || thirst >= maxThirst) {
             alive = false;
             world.getEventBus().publish(EventType.DEATH);
             return;
         }
-        if (hunger > 0.7 && !aggressive) {
-            normalStrategy = strategy;
-            strategy = new AggressiveStrategy();
-            aggressive = true;
-        } else if (hunger < 0.3 && aggressive) {
-            strategy = normalStrategy;
-            aggressive = false;
-        }
-        if (strategy != null) {
-            strategy.act(this, world, dt);
+        SurvivalStrategy brain = pickBrain();
+        if (brain != null) {
+            brain.act(this, world, dt);
         }
         move(dt, world);
         tryEat(world);
+        tryDrink(world);
+    }
+
+    private SurvivalStrategy pickBrain() {
+        if (thirst > 0.7) return thirstyStrategy;
+        if (hunger > 0.7) return aggressiveStrategy;
+        return strategy;
+    }
+
+    protected void tryDrink(World world) {
+        Terrain[] neighbors = {
+                world.getTerrainAt(x, y - 12),
+                world.getTerrainAt(x, y + 12),
+                world.getTerrainAt(x + 12, y),
+                world.getTerrainAt(x - 12, y)
+        };
+        for (Terrain t : neighbors) {
+            if (t == Terrain.WATER) {
+                thirst = Math.max(0, thirst - 0.6);
+                return;
+            }
+        }
     }
 
     protected void tryEat(World world) {
