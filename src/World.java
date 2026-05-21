@@ -11,9 +11,19 @@ public class World {
     private final Terrain[][] grid;
     private List<Entity> entities = new ArrayList<>();
     private final EventBus eventBus = new EventBus();
+    private Season season = Season.NORMAL;
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public void cycleSeason() {
+        Season[] vals = Season.values();
+        season = vals[(season.ordinal() + 1) % vals.length];
     }
 
     public World(double width, double height) {

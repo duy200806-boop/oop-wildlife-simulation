@@ -89,6 +89,12 @@ public class Main extends Application {
         Button zoomResetBtn = new Button("Reset");
         zoomResetBtn.setOnAction(e -> camera.setZoom(1.0));
 
+        Button seasonBtn = new Button("Season: NORMAL");
+        seasonBtn.setOnAction(e -> {
+            world.cycleSeason();
+            seasonBtn.setText("Season: " + world.getSeason());
+        });
+
         Button exportBtn = new Button("Export CSV");
         exportBtn.setOnAction(e -> {
             String filename = "stats-" + System.currentTimeMillis() + ".csv";
@@ -100,7 +106,7 @@ public class Main extends Application {
             }
         });
 
-        HBox controls = new HBox(8, toggleBtn, zoomInBtn, zoomOutBtn, zoomResetBtn, exportBtn);
+        HBox controls = new HBox(8, toggleBtn, zoomInBtn, zoomOutBtn, zoomResetBtn, seasonBtn, exportBtn);
         controls.setPadding(new Insets(5));
 
         BorderPane root = new BorderPane();

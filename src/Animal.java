@@ -66,7 +66,9 @@ public abstract class Animal extends Entity {
     }
 
     protected void move(double dt, World world) {
-        double factor = world.getTerrainAt(x, y).speedFactor;
+        double terrainFactor = world.getTerrainAt(x, y).speedFactor;
+        double seasonFactor = world.getSeason() == Season.DROUGHT ? 0.6 : 1.0;
+        double factor = terrainFactor * seasonFactor;
         double newX = x + Math.cos(direction) * speed * factor * dt;
         double newY = y + Math.sin(direction) * speed * factor * dt;
         if (canEnter(world.getTerrainAt(newX, newY))) {

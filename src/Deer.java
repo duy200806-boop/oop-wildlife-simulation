@@ -3,4 +3,9 @@ public class Deer extends Herbivore {
         super(x, y, 40);
         strategy = new ScaredStrategy(180);
     }
+
+    @Override
+    protected Herbivore createChild(double x, double y) {
+        return new Deer(x, y);
+    }
 }

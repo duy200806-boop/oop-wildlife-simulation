@@ -9,10 +9,12 @@ public abstract class Plant extends Entity {
 
     @Override
     public void update(double dt, World world) {
+        double intervalMult = world.getSeason() == Season.DROUGHT ? 3.0 : 1.0;
+        double chanceMult = world.getSeason() == Season.DROUGHT ? 0.5 : 1.0;
         reproduceTimer += dt;
-        if (reproduceTimer >= reproduceInterval) {
+        if (reproduceTimer >= reproduceInterval * intervalMult) {
             reproduceTimer = 0;
-            if (Math.random() < reproduceChance) {
+            if (Math.random() < reproduceChance * chanceMult) {
                 tryReproduce(world);
             }
         }
