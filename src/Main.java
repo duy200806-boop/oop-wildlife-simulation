@@ -29,25 +29,30 @@ public class Main extends Application {
         world = new World(worldW, worldH);
         camera = new Camera(worldW, worldH);
 
-        for (int i = 0; i < 30; i++) {
-            double gx, gy;
-            int tries = 0;
-            do {
-                gx = Math.random() * worldW;
-                gy = Math.random() * worldH;
-                tries++;
-            } while (world.getTerrainAt(gx, gy) == Terrain.WATER && tries < 10);
-            world.add(new Grass(gx, gy));
+        for (int i = 0; i < 300; i++) {
+            double[] p = randomNonWaterPos(worldW, worldH);
+            world.add(new Grass(p[0], p[1]));
         }
-        world.add(new Rabbit(640, 360));
-        world.add(new Rabbit(300, 200));
-        world.add(new Rabbit(900, 200));
-        world.add(new Rabbit(500, 300));
-        world.add(new Deer(800, 200));
-        world.add(new Deer(400, 500));
-        world.add(new Wolf(100, 100));
-        world.add(new Tiger(1100, 100));
-        world.add(new Elephant(700, 400));
+        for (int i = 0; i < 60; i++) {
+            double[] p = randomGrassPos(worldW, worldH);
+            world.add(new Rabbit(p[0], p[1]));
+        }
+        for (int i = 0; i < 20; i++) {
+            double[] p = randomGrassPos(worldW, worldH);
+            world.add(new Deer(p[0], p[1]));
+        }
+        for (int i = 0; i < 6; i++) {
+            double[] p = randomGrassPos(worldW, worldH);
+            world.add(new Wolf(p[0], p[1]));
+        }
+        for (int i = 0; i < 3; i++) {
+            double[] p = randomGrassPos(worldW, worldH);
+            world.add(new Tiger(p[0], p[1]));
+        }
+        for (int i = 0; i < 2; i++) {
+            double[] p = randomGrassPos(worldW, worldH);
+            world.add(new Elephant(p[0], p[1]));
+        }
 
         new AudioSystem(world.getEventBus());
         stats = new StatisticsCollector(world.getEventBus());
@@ -124,6 +129,30 @@ public class Main extends Application {
             }
         };
         timer.start();
+    }
+
+    private double[] randomGrassPos(double worldW, double worldH) {
+        for (int tries = 0; tries < 100; tries++) {
+            double x = Math.random() * worldW;
+            double y = Math.random() * worldH;
+            if (world.getTerrainAt(x, y) == Terrain.GRASS) {
+                return new double[] { x, y };
+            }
+        }
+        return new double[] { worldW / 2, worldH / 2 };
+    }
+
+    private double[] randomNonWaterPos(double worldW, double worldH) {
+        double x = 0, y = 0;
+        for (int tries = 0; tries < 20; tries++) {
+            x = Math.random() * worldW;
+            y = Math.random() * worldH;
+            Terrain t = world.getTerrainAt(x, y);
+            if (t != Terrain.WATER && t != Terrain.ROCK) {
+                return new double[] { x, y };
+            }
+        }
+        return new double[] { x, y };
     }
 
     public static void main(String[] args) {
