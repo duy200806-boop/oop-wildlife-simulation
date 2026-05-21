@@ -21,5 +21,8 @@ nbproject/private/
 .DS_Store
 Thumbs.db
 
+# Stats export
+stats-*.csv
+
 # Claude
 .claude/

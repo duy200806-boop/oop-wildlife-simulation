@@ -150,4 +150,8 @@ public abstract class Animal extends Entity {
     public double getHunger() {
         return hunger;
     }
+
+    public double getThirst() {
+        return thirst;
+    }
 }

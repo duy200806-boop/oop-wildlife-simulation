@@ -37,7 +37,7 @@
 Dự án tuân thủ nghiêm ngặt mô hình **MVC** nhằm tách biệt hoàn toàn **BioLogic** (Model) khỏi **ViewLogic** (JavaFX UI).
 
 *   **Strategy Pattern (`SurvivalStrategy`):** Thiết lập các chiến lược hành vi di chuyển động vật (`PassiveStrategy`, `ScaredStrategy`, `HunterStrategy`, `ThirstyStrategy`, `AggressiveStrategy`, `ApexStrategy`). Cho phép thay đổi "bộ não" linh hoạt theo trạng thái cơ thể (ví dụ: đói/khát).
-*   **Observer Pattern (`EventBus` & `EventListener`):** Truyền phát các sự kiện hệ thống (`EAT`, `ATTACK`, `DEATH`, `BIRD_CHIRP`, `LEAVES_RUSTLE`) đến hệ thống âm thanh (`AudioSystem`) và bộ thu thập số liệu (`StatisticsCollector`) mà không làm rối mã nguồn chính.
+*   **Observer Pattern (`EventBus` & `EventListener`):** Truyền phát các sự kiện hệ thống (`ATTACK`, `EAT`, `BIRD_CHIRP`, `LEAVES_RUSTLE`) đến hệ thống âm thanh (`AudioSystem`); riêng `DEATH` chỉ chuyển tới `StatisticsCollector` để cộng dồn cho CSV (không phát âm thanh).
 *   **Composite Pattern (`World` chứa `Terrain` và `Entity`):** Quản lý cấu trúc địa hình lưới ô vuông kết hợp danh sách các thực thể động.
 *   **Template Method (`Entity.update()`):** Định nghĩa khung xử lý vòng lặp chung cho mọi thực thể, cho phép các lớp con ghi đè logic cụ thể.
 
