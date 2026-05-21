@@ -43,26 +43,16 @@ public class World {
             }
         }
 
-        boolean[][] water = new boolean[gridW][gridH];
-        for (int i = 0; i < gridW; i++) {
-            for (int j = 0; j < gridH; j++) {
-                if (i >= gridW * 0.6 && j >= gridH * 0.55) {
-                    water[i][j] = rng.nextDouble() < 0.55;
-                }
-            }
+        boolean[][] water = scatterBlobs(rng, 1 + rng.nextInt(2), 4, 7, 0.65);
+        water = smoothCa(water, 4);
+        int maxWater = (int) (gridW * gridH * 0.15);
+        if (countTrue(water) > maxWater) {
+            water = smoothCa(water, 2);
         }
-        water = smoothCa(water, 5);
         overlay(water, Terrain.WATER, false);
 
-        boolean[][] forest = new boolean[gridW][gridH];
-        for (int i = 0; i < gridW; i++) {
-            for (int j = 0; j < gridH; j++) {
-                if (i < gridW * 0.45) {
-                    forest[i][j] = rng.nextDouble() < 0.5;
-                }
-            }
-        }
-        forest = smoothCa(forest, 5);
+        boolean[][] forest = scatterBlobs(rng, 2 + rng.nextInt(3), 5, 10, 0.55);
+        forest = smoothCa(forest, 4);
         overlay(forest, Terrain.FOREST, true);
 
         boolean[][] bush = new boolean[gridW][gridH];
@@ -82,6 +72,36 @@ public class World {
         }
         mud = smoothCa(mud, 2);
         overlay(mud, Terrain.MUD, true);
+    }
+
+    private boolean[][] scatterBlobs(Random rng, int count, int minR, int maxR, double density) {
+        boolean[][] g = new boolean[gridW][gridH];
+        for (int k = 0; k < count; k++) {
+            int margin = maxR;
+            int cx = margin + rng.nextInt(Math.max(1, gridW - 2 * margin));
+            int cy = margin + rng.nextInt(Math.max(1, gridH - 2 * margin));
+            int r = minR + rng.nextInt(maxR - minR + 1);
+            for (int i = 0; i < gridW; i++) {
+                for (int j = 0; j < gridH; j++) {
+                    double dx = i - cx;
+                    double dy = j - cy;
+                    if (dx * dx + dy * dy < r * r && rng.nextDouble() < density) {
+                        g[i][j] = true;
+                    }
+                }
+            }
+        }
+        return g;
+    }
+
+    private int countTrue(boolean[][] g) {
+        int n = 0;
+        for (int i = 0; i < gridW; i++) {
+            for (int j = 0; j < gridH; j++) {
+                if (g[i][j]) n++;
+            }
+        }
+        return n;
     }
 
     private boolean[][] smoothCa(boolean[][] g, int iters) {

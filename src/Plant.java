@@ -1,7 +1,7 @@
 public abstract class Plant extends Entity {
     protected double reproduceTimer = 0;
-    protected double reproduceInterval = 30.0;
-    protected double reproduceChance = 0.1;
+    protected double reproduceInterval = 20.0;
+    protected double reproduceChance = 0.15;
 
     public Plant(double x, double y) {
         super(x, y);
