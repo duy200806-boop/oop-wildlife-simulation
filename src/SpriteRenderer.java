@@ -38,6 +38,29 @@ public class SpriteRenderer implements Renderer {
             gc.fillOval(x - 4, y - 4, 8, 8);
             gc.setStroke(Color.DARKGREEN);
             gc.strokeOval(x - 4, y - 4, 8, 8);
+        } else if (e instanceof FruitTree) {
+            gc.setFill(Color.SADDLEBROWN);
+            gc.fillRect(x - 2, y, 4, 12);
+            gc.setFill(Color.FORESTGREEN);
+            gc.fillOval(x - 10, y - 12, 20, 20);
+            gc.setFill(Color.RED);
+            gc.fillOval(x - 5, y - 8, 3, 3);
+            gc.fillOval(x + 2, y - 6, 3, 3);
+            gc.fillOval(x - 3, y - 3, 3, 3);
+        } else if (e instanceof Fish) {
+            gc.setFill(Color.SILVER);
+            gc.fillOval(x - 5, y - 2, 10, 5);
+            gc.setFill(Color.DARKGRAY);
+            gc.fillPolygon(new double[] { x + 5, x + 8, x + 8 }, new double[] { y, y - 3, y + 3 }, 3);
+            gc.setFill(Color.BLACK);
+            gc.fillOval(x - 3, y - 1, 1.5, 1.5);
+        } else if (e instanceof Duck) {
+            gc.setFill(Color.WHITE);
+            gc.fillOval(x - 6, y - 4, 12, 8);
+            gc.setFill(Color.YELLOW);
+            gc.fillOval(x + 3, y - 6, 5, 5);
+            gc.setFill(Color.ORANGE);
+            gc.fillRect(x + 6, y - 5, 3, 2);
         } else if (e instanceof Rabbit) {
             drawAnimal(gc, x, y, 12, Color.WHITESMOKE, Color.GRAY);
             gc.setFill(Color.BLACK);

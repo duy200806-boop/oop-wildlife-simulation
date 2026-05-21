@@ -33,6 +33,18 @@ public class BasicRenderer implements Renderer {
         if (e instanceof Grass) {
             gc.setFill(Color.DARKGREEN);
             gc.fillRect(e.getX() - 3, e.getY() - 3, 6, 6);
+        } else if (e instanceof FruitTree) {
+            gc.setFill(Color.FORESTGREEN);
+            gc.fillOval(e.getX() - 8, e.getY() - 8, 16, 16);
+            gc.setFill(Color.RED);
+            gc.fillOval(e.getX() - 3, e.getY() - 3, 3, 3);
+            gc.fillOval(e.getX() + 1, e.getY() - 2, 3, 3);
+        } else if (e instanceof Fish) {
+            gc.setFill(Color.SILVER);
+            gc.fillOval(e.getX() - 4, e.getY() - 2, 8, 4);
+        } else if (e instanceof Duck) {
+            gc.setFill(Color.YELLOW);
+            gc.fillOval(e.getX() - 5, e.getY() - 4, 10, 8);
         } else if (e instanceof Rabbit) {
             gc.setFill(Color.WHITE);
             gc.fillOval(e.getX() - 5, e.getY() - 5, 10, 10);

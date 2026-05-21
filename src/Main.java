@@ -33,6 +33,18 @@ public class Main extends Application {
             double[] p = randomNonWaterPos(worldW, worldH);
             world.add(new Grass(p[0], p[1]));
         }
+        for (int i = 0; i < 10; i++) {
+            double[] p = randomNonWaterPos(worldW, worldH);
+            world.add(new FruitTree(p[0], p[1]));
+        }
+        for (int i = 0; i < 15; i++) {
+            double[] p = randomWaterPos(worldW, worldH);
+            world.add(new Fish(p[0], p[1]));
+        }
+        for (int i = 0; i < 5; i++) {
+            double[] p = randomWaterPos(worldW, worldH);
+            world.add(new Duck(p[0], p[1]));
+        }
         for (int i = 0; i < 60; i++) {
             double[] p = randomGrassPos(worldW, worldH);
             world.add(new Rabbit(p[0], p[1]));
@@ -153,6 +165,17 @@ public class Main extends Application {
             }
         }
         return new double[] { x, y };
+    }
+
+    private double[] randomWaterPos(double worldW, double worldH) {
+        for (int tries = 0; tries < 200; tries++) {
+            double x = Math.random() * worldW;
+            double y = Math.random() * worldH;
+            if (world.getTerrainAt(x, y) == Terrain.WATER) {
+                return new double[] { x, y };
+            }
+        }
+        return new double[] { worldW * 0.8, worldH * 0.8 };
     }
 
     public static void main(String[] args) {
