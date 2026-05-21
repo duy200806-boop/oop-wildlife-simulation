@@ -1,6 +1,8 @@
 import javafx.application.Application;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,18 +15,26 @@ public class Main extends Application {
     private World world;
     private Canvas canvas;
     private Renderer renderer = new BasicRenderer();
-    private Camera camera = new Camera(1280, 720);
+    private Camera camera;
     private StatisticsCollector stats;
 
     @Override
     public void start(Stage stage) {
-        world = new World(1280, 720);
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        double winW = bounds.getWidth();
+        double winH = bounds.getHeight();
+        double worldW = winW;
+        double worldH = winH - 50;
+
+        world = new World(worldW, worldH);
+        camera = new Camera(worldW, worldH);
+
         for (int i = 0; i < 30; i++) {
             double gx, gy;
             int tries = 0;
             do {
-                gx = Math.random() * 1280;
-                gy = Math.random() * 720;
+                gx = Math.random() * worldW;
+                gy = Math.random() * worldH;
                 tries++;
             } while (world.getTerrainAt(gx, gy) == Terrain.WATER && tries < 10);
             world.add(new Grass(gx, gy));
@@ -42,7 +52,7 @@ public class Main extends Application {
         new AudioSystem(world.getEventBus());
         stats = new StatisticsCollector(world.getEventBus());
 
-        canvas = new Canvas(1280, 720);
+        canvas = new Canvas(worldW, worldH);
 
         Button toggleBtn = new Button("Renderer: Basic");
         toggleBtn.setOnAction(e -> {
@@ -79,7 +89,7 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         root.setTop(controls);
         root.setCenter(canvas);
-        Scene scene = new Scene(root, 1280, 770);
+        Scene scene = new Scene(root, winW, winH);
 
         canvas.setOnMouseClicked(e -> {
             double[] w = camera.screenToWorld(e.getX(), e.getY());
@@ -94,6 +104,7 @@ public class Main extends Application {
 
         stage.setTitle("Eco Sim");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
 
         AnimationTimer timer = new AnimationTimer() {
