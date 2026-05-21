@@ -1,7 +1,6 @@
 # Hệ thống Mô phỏng Hệ sinh thái Hoang dã (Wild-Life Eco Simulation)
 
-Bài tập lớn môn Lập trình hướng đối tượng (OOP) - Đề tài 3.
-Ứng dụng mô phỏng sinh động chu kỳ sinh tồn, tương tác và tiến hóa hành vi của các loài sinh vật trong môi trường hoang dã tự nhiên.
+
 
 ---
 
@@ -62,8 +61,7 @@ Dự án tuân thủ nghiêm ngặt mô hình **MVC** nhằm tách biệt hoàn 
 
 ## 🚀 Hướng dẫn Setup và Chạy dự án
 
-> [!IMPORTANT]
-> Dự án được tối ưu hóa chạy trên **Java 8 (JDK 1.8)** tích hợp sẵn bộ JavaFX, giúp việc khởi chạy trên các máy tính chấm điểm của thầy cô cực kỳ đơn giản mà không cần cài đặt Maven cấu hình phức tạp.
+
 
 1.  Mở dự án bằng **IntelliJ IDEA** (hoặc Eclipse, NetBeans).
 2.  Truy cập `File` ➔ `Project Structure` ➔ mục `Project SDK` chọn phiên bản **JDK 1.8 (Java 8)**.
