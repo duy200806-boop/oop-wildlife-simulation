@@ -361,16 +361,18 @@ Không cần "lưu strategy gốc" và "swap qua lại" như trước. Brain đ�
 
 ---
 
-## 9. UML (sẽ bổ sung sau)
+## 9. UML
 
-- **Sơ đồ phụ thuộc gói (Package diagram):** _Chưa vẽ_ — sẽ thể hiện 5 nhóm logic (Model, Strategy, View, Event, Stats) và đường mũi tên phụ thuộc (View → Model, Stats/Audio → Model qua EventBus, ...).
-- **Sơ đồ lớp (Class diagram):** _Chưa vẽ_ — sẽ tập trung vào:
-  - Hierarchy Entity → Plant/Animal → ... → loài cụ thể.
-  - Strategy hierarchy.
-  - Renderer hierarchy.
-  - Quan hệ World — Entity — Terrain — EventBus.
+Source code PlantUML ở folder `docs/uml/`:
+- `class-diagram.puml` — sơ đồ lớp đầy đủ (Entity hierarchy, Strategy, World, View, Event, Stats, Main).
+- `package-diagram.puml` — sơ đồ phụ thuộc giữa các nhóm logic.
 
-Khuyên dùng PlantUML hoặc draw.io để vẽ; xuất PNG cắm vào báo cáo Word.
+**Cách export PNG cho báo cáo Word:**
+1. Mở https://www.plantuml.com/plantuml/uml
+2. Copy nội dung file `.puml` paste vào → bấm **Submit** → tải PNG/SVG.
+3. Hoặc cài plugin **PlantUML integration** trong IntelliJ + **Graphviz** để preview tại chỗ.
+
+Chi tiết trong `docs/uml/README.md`.
 
 ---
 

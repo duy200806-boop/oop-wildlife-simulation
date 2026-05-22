@@ -1,0 +1,239 @@
+@startuml class-diagram
+title Wild-Life Eco Simulation — Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide circle
+
+' =================================
+' MODEL — Entity hierarchy
+' =================================
+package "Model" {
+    abstract class Entity {
+        # x : double
+        # y : double
+        # alive : boolean
+        + {abstract} update(dt, World)
+        + getX() : double
+        + getY() : double
+        + isAlive() : boolean
+    }
+
+    abstract class Plant {
+        # reproduceTimer : double
+        # reproduceInterval : double
+        # reproduceChance : double
+        + update(dt, World)
+        # {abstract} createChild(x, y) : Plant
+    }
+    class Grass
+    class FruitTree
+
+    abstract class Animal {
+        # speed : double
+        # direction : double
+        # hunger, thirst : double
+        # hungerRate, thirstRate : double
+        # strategy : SurvivalStrategy
+        # sprinting : boolean
+        + update(dt, World)
+        # move(dt, World)
+        # tryEat(World)
+        # tryDrink(World)
+        # canEat(Entity) : boolean
+        # canEnter(Terrain) : boolean
+        - pickBrain() : SurvivalStrategy
+        - applySeparation(World)
+    }
+
+    abstract class Herbivore {
+        # breedTimer : double
+        # breedInterval : double
+        + update(dt, World)
+        # {abstract} createChild(x, y) : Herbivore
+    }
+    class Rabbit
+    class Deer
+
+    abstract class Carnivore {
+        # stamina : double
+        # sprintMultiplier : double
+        # breedTimer : double
+        + update(dt, World)
+        # move(dt, World)
+        # {abstract} createChild(x, y) : Carnivore
+    }
+    class Wolf
+    class Tiger
+
+    abstract class ApexEntity
+    class Elephant
+
+    abstract class WaterAnimal
+    class Fish
+    class Duck
+
+    Entity <|-- Plant
+    Plant <|-- Grass
+    Plant <|-- FruitTree
+
+    Entity <|-- Animal
+    Animal <|-- Herbivore
+    Herbivore <|-- Rabbit
+    Herbivore <|-- Deer
+
+    Animal <|-- Carnivore
+    Carnivore <|-- Wolf
+    Carnivore <|-- Tiger
+
+    Animal <|-- ApexEntity
+    ApexEntity <|-- Elephant
+
+    Animal <|-- WaterAnimal
+    WaterAnimal <|-- Fish
+    WaterAnimal <|-- Duck
+}
+
+' =================================
+' STRATEGY (Pattern)
+' =================================
+package "Strategy" {
+    interface SurvivalStrategy {
+        + act(Animal, World, dt)
+    }
+    class PassiveStrategy
+    class ScaredStrategy {
+        - fearRange : double
+        - fallback : SurvivalStrategy
+    }
+    class HunterStrategy {
+        - sightRange : double
+    }
+    class AggressiveStrategy {
+        - fallback : SurvivalStrategy
+    }
+    class ApexStrategy
+    class ThirstyStrategy
+
+    SurvivalStrategy <|.. PassiveStrategy
+    SurvivalStrategy <|.. ScaredStrategy
+    SurvivalStrategy <|.. HunterStrategy
+    SurvivalStrategy <|.. AggressiveStrategy
+    SurvivalStrategy <|.. ApexStrategy
+    SurvivalStrategy <|.. ThirstyStrategy
+
+    ScaredStrategy o-- PassiveStrategy : fallback
+    AggressiveStrategy o-- PassiveStrategy : fallback
+}
+Animal o-- SurvivalStrategy : strategy
+
+' =================================
+' WORLD
+' =================================
+package "World" {
+    class World {
+        - width, height : double
+        - tileSize, gridW, gridH : int
+        - grid : Terrain[][]
+        - entities : List<Entity>
+        - eventBus : EventBus
+        - season : Season
+        + tick(dt)
+        + add(Entity)
+        + getTerrainAt(x, y) : Terrain
+        + setTileAt(x, y, Terrain)
+        + findNearestWaterTile(x, y) : double[]
+        + cycleSeason()
+        - generateTerrain()
+        - scatterBlobs(...)
+        - smoothCa(grid, iters)
+    }
+    enum Terrain {
+        GRASS, MUD, FOREST,
+        BUSH, WATER, ROCK
+        + speedFactor : double
+    }
+    enum Season {
+        NORMAL, DROUGHT, BREEDING
+    }
+}
+World "1" *-- "0..*" Entity : entities
+World *-- Terrain : grid
+World o-- Season
+
+' =================================
+' VIEW
+' =================================
+package "View" {
+    interface Renderer {
+        + render(GraphicsContext, World, Camera)
+    }
+    class BasicRenderer
+    class SpriteRenderer
+    class Camera {
+        - zoom : double
+        + apply(GraphicsContext)
+        + screenToWorld(sx, sy) : double[]
+        + zoomIn() / zoomOut()
+    }
+
+    Renderer <|.. BasicRenderer
+    Renderer <|.. SpriteRenderer
+}
+
+' =================================
+' EVENT (Observer Pattern)
+' =================================
+package "Event" {
+    class EventBus {
+        - listeners : Map<EventType, List<EventListener>>
+        + subscribe(EventType, EventListener)
+        + publish(EventType)
+    }
+    interface EventListener {
+        + onEvent(EventType)
+    }
+    enum EventType {
+        ATTACK, EAT, DEATH,
+        BIRD_CHIRP, LEAVES_RUSTLE
+    }
+    class AudioSystem {
+        - clips : Map<EventType, AudioClip>
+        + onEvent(EventType)
+    }
+    EventListener <|.. AudioSystem
+}
+EventBus o-- EventListener : subscribers
+World *-- EventBus
+
+' =================================
+' STATS
+' =================================
+package "Stats" {
+    class StatisticsCollector {
+        - snapshots : List<Snapshot>
+        - attacks, eats, deaths : int
+        + tick(dt, World)
+        + exportCsv(path)
+        + onEvent(EventType)
+    }
+    EventListener <|.. StatisticsCollector
+}
+
+' =================================
+' MAIN (Controller / Entry)
+' =================================
+class Main {
+    - world : World
+    - renderer : Renderer
+    - camera : Camera
+    - stats : StatisticsCollector
+    + start(Stage)
+}
+Main *-- World
+Main *-- Renderer
+Main *-- Camera
+Main *-- StatisticsCollector
+Main ..> EventBus : registers AudioSystem
+
+@enduml
