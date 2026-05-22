@@ -363,16 +363,11 @@ Không cần "lưu strategy gốc" và "swap qua lại" như trước. Brain đ�
 
 ## 9. UML
 
-Source code PlantUML ở folder `docs/uml/`:
-- `class-diagram.puml` — sơ đồ lớp đầy đủ (Entity hierarchy, Strategy, World, View, Event, Stats, Main).
-- `package-diagram.puml` — sơ đồ phụ thuộc giữa các nhóm logic.
+Ảnh đã export sẵn trong folder `docs/uml/`:
+- `ClassDiagram.png` — sơ đồ lớp đầy đủ (Entity hierarchy, Strategy, World, View, Event, Stats, Main).
+- `PackageDiagram.png` — sơ đồ phụ thuộc giữa các nhóm logic.
 
-**Cách export PNG cho báo cáo Word:**
-1. Mở https://www.plantuml.com/plantuml/uml
-2. Copy nội dung file `.puml` paste vào → bấm **Submit** → tải PNG/SVG.
-3. Hoặc cài plugin **PlantUML integration** trong IntelliJ + **Graphviz** để preview tại chỗ.
-
-Chi tiết trong `docs/uml/README.md`.
+Cắm thẳng vào báo cáo Word qua **Insert → Picture**.
 
 ---
 
