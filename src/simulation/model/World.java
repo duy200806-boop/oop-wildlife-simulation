@@ -48,15 +48,15 @@ public class World {
             }
         }
 
-        boolean[][] water = scatterBlobs(rng, 1 + rng.nextInt(2), 4, 7, 0.65);
+        boolean[][] water = scatterBlobs(rng, 3 + rng.nextInt(2), 6, 10, 0.70);
         water = smoothCa(water, 4);
-        int maxWater = (int) (gridW * gridH * 0.15);
+        int maxWater = (int) (gridW * gridH * 0.35);
         if (countTrue(water) > maxWater) {
             water = smoothCa(water, 2);
         }
         overlay(water, Terrain.WATER, false);
 
-        boolean[][] forest = scatterBlobs(rng, 2 + rng.nextInt(3), 5, 10, 0.55);
+        boolean[][] forest = scatterBlobs(rng, 5 + rng.nextInt(3), 8, 15, 0.65);
         forest = smoothCa(forest, 4);
         overlay(forest, Terrain.FOREST, true);
 

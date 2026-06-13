@@ -2,7 +2,7 @@ package simulation.model;
 
 public abstract class Herbivore extends Animal {
     protected double breedTimer = 0;
-    protected double breedInterval = 20.0;
+    protected double breedInterval = 15.0;
 
     public Herbivore(double x, double y, double speed) {
         super(x, y, speed);

@@ -1,11 +1,15 @@
 package simulation.model;
 
+import simulation.strategy.SurvivalStrategy;
+import simulation.strategy.PassiveStrategy;
+
 public abstract class Carnivore extends Animal {
     protected double stamina = 1.0;
     protected double maxStamina = 1.0;
-    protected double sprintMultiplier = 1.7;
+    protected double sprintMultiplier = 1.35;
     protected double breedTimer = 0;
-    protected double breedInterval = 40.0;
+    protected double breedInterval = 90.0;
+    private final SurvivalStrategy passiveStrategy = new PassiveStrategy();
 
     public Carnivore(double x, double y, double speed) {
         super(x, y, speed);
@@ -19,6 +23,14 @@ public abstract class Carnivore extends Animal {
     @Override
     protected boolean canEnter(Terrain t) {
         return super.canEnter(t) && t != Terrain.BUSH;
+    }
+
+    @Override
+    protected SurvivalStrategy pickBrain() {
+        if (thirst > 0.7) return thirstyStrategy;
+        if (hunger > 0.7) return aggressiveStrategy;
+        if (hunger < 0.4) return passiveStrategy; // Only hunt when hungry
+        return strategy;
     }
 
     @Override

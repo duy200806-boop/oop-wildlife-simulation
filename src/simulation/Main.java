@@ -36,11 +36,11 @@ public class Main extends Application {
         world = new World(worldW, worldH);
         camera = new Camera(worldW, worldH);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             double[] p = randomNonWaterPos(worldW, worldH);
             world.add(new Grass(p[0], p[1]));
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             double[] p = randomNonWaterPos(worldW, worldH);
             world.add(new FruitTree(p[0], p[1]));
         }
@@ -52,11 +52,11 @@ public class Main extends Application {
             double[] p = randomWaterPos(worldW, worldH);
             world.add(new Duck(p[0], p[1]));
         }
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 35; i++) {
             double[] p = randomGrassPos(worldW, worldH);
             world.add(new Rabbit(p[0], p[1]));
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 12; i++) {
             double[] p = randomGrassPos(worldW, worldH);
             world.add(new Deer(p[0], p[1]));
         }

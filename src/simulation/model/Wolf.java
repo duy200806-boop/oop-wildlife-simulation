@@ -4,7 +4,7 @@ import simulation.strategy.*;
 
 public class Wolf extends Carnivore {
     public Wolf(double x, double y) {
-        super(x, y, 70);
+        super(x, y, 58);
         strategy = new HunterStrategy(200);
     }
 

@@ -2,8 +2,8 @@ package simulation.model;
 
 public abstract class Plant extends Entity {
     protected double reproduceTimer = 0;
-    protected double reproduceInterval = 20.0;
-    protected double reproduceChance = 0.15;
+    protected double reproduceInterval = 45.0;
+    protected double reproduceChance = 0.08;
 
     public Plant(double x, double y) {
         super(x, y);

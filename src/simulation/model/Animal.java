@@ -18,8 +18,8 @@ public abstract class Animal extends Entity {
 
     public boolean sprinting = false;
 
-    private final SurvivalStrategy aggressiveStrategy = new AggressiveStrategy();
-    private final SurvivalStrategy thirstyStrategy = new ThirstyStrategy();
+    protected final SurvivalStrategy aggressiveStrategy = new AggressiveStrategy();
+    protected final SurvivalStrategy thirstyStrategy = new ThirstyStrategy();
 
     public Animal(double x, double y, double speed) {
         super(x, y);
@@ -80,7 +80,7 @@ public abstract class Animal extends Entity {
         }
     }
 
-    private SurvivalStrategy pickBrain() {
+    protected SurvivalStrategy pickBrain() {
         if (thirst > 0.7) return thirstyStrategy;
         if (hunger > 0.7) return aggressiveStrategy;
         return strategy;
@@ -95,7 +95,11 @@ public abstract class Animal extends Entity {
         };
         for (Terrain t : neighbors) {
             if (t == Terrain.WATER) {
-                thirst = Math.max(0, thirst - 0.9);
+                if (thirst > 0.1) {
+                    thirst = Math.max(0, thirst - 0.9);
+                    // Turn around (away from water) + small random angle
+                    this.direction = (this.direction + Math.PI + (Math.random() * 1.0 - 0.5)) % (2 * Math.PI);
+                }
                 return;
             }
         }
@@ -140,6 +144,9 @@ public abstract class Animal extends Entity {
         if (canEnter(world.getTerrainAt(newX, newY))) {
             x = newX;
             y = newY;
+        } else {
+            // Bounce off impassable terrain with a random new direction
+            direction = direction + Math.PI + (Math.random() * 1.2 - 0.6);
         }
     }
 
